@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'match-row',
@@ -7,6 +8,10 @@ import { Component, input } from '@angular/core';
   styleUrl: './match-row.css',
 })
 export class MatchRow {
+  router = inject(Router);
+
+  matchId = input.required<string>();
+
   homeClubName = input.required<string>();
 
   awayClubName = input.required<string>();
@@ -16,4 +21,8 @@ export class MatchRow {
   time = input.required<string>();
 
   status = input.required<string>();
+
+  navigateToMatch(matchId: string) {
+    this.router.navigate(["/matches", matchId])
+  }
 }

@@ -33,7 +33,7 @@ const MOCK_MATCHES: readonly Match[] = [
     awayClubName: 'US Monastir',
     date: 'Fri 4 Sep',
     time: '17:00',
-    status: 'FT 2 - 1',
+    status: 'Full Time',
   },
   {
     id: 'm-004',

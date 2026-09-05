@@ -1,0 +1,20 @@
+@if (loaded()) {
+  <div>
+    <div>{{ clubName() }}</div>
+    <div class="flex flex-row gap-10">
+      <span>Yellows: {{ yellows() }}</span>
+      <span>Reds: {{ reds() }}</span>
+      <span>Subs: {{ subs() }}</span>
+    </div>
+  </div>
+} @else {
+  <div role="status" aria-busy="true" class="animate-pulse">
+    <span class="sr-only">Loading match side…</span>
+    <div aria-hidden="true" class="h-5 w-2/3 max-w-40 rounded bg-stone-300"></div>
+    <div aria-hidden="true" class="mt-2 flex flex-row gap-2">
+      <div class="h-4 min-w-0 flex-1 rounded bg-stone-300"></div>
+      <div class="h-4 min-w-0 flex-1 rounded bg-stone-300"></div>
+      <div class="h-4 min-w-0 flex-1 rounded bg-stone-300"></div>
+    </div>
+  </div>
+}

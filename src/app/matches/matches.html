@@ -1,6 +1,7 @@
 <div class="flex flex-col gap-5 my-5">
   @for (match of matches; track match.id) {
     <match-row
+      [matchId]="match.id"
       [homeClubName]="match.homeClubName"
       [awayClubName]="match.awayClubName"
       [date]="match.date"
