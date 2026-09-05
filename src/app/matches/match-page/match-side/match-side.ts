@@ -8,14 +8,16 @@ import { MatchState } from '../match-state/match-state';
   styleUrl: './match-side.css',
   host: { class: 'block min-w-0 flex-1' },
 })
-export class MatchSide implements OnInit {
-  clubName = signal<string | undefined>(undefined);
+export class MatchSide {
+  clubName = input.required<string | undefined>();
 
-  reds = signal<number | undefined>(undefined);
+  isHome = input.required<string | undefined>();
 
-  yellows = signal<number | undefined>(undefined);
+  reds = input.required<number | undefined>();
 
-  subs = signal<number | undefined>(undefined);
+  yellows = input.required<number | undefined>();
+
+  subs = input.required<number | undefined>();
 
   loaded = computed(
     () =>
@@ -24,13 +26,4 @@ export class MatchSide implements OnInit {
       this.yellows() !== undefined &&
       this.subs() !== undefined,
   );
-
-  ngOnInit() {
-    setTimeout(() => {
-      this.clubName.set('Home Club');
-      this.reds.set(1);
-      this.yellows.set(2);
-      this.subs.set(3);
-    }, 3000);
-  }
 }

@@ -1,0 +1,38 @@
+@if (matchState.hasValue()) {
+  <div class="flex flex-col gap-5">
+    <div class="flex flex-row justify-center mx-auto border rounded-lg w-2/4 gap-5 py-5 px-10">
+      <match-side
+        [clubName]="matchState.value().homeClubName"
+        isHome=true
+        [yellows]="matchState.value().homeYellows"
+        [reds]="matchState.value().homeReds"
+        [subs]="matchState.value().homeSubs"
+      />
+      <match-state
+        [homeScore]="matchState.value().homeScore"
+        [awayScore]="matchState.value().awayScore"
+        [status]="matchState.value().status"
+      />
+      <match-side
+        [clubName]="matchState.value().awayClubName"
+        isHome=false
+        [yellows]="matchState.value().awayYellows"
+        [reds]="matchState.value().awayReds"
+        [subs]="matchState.value().awaySubs"
+      />
+    </div>
+    <ul class="flex flex-col mx-auto w-2/4 gap-4 px-24 list-none">
+      @for (event of matchEvents.value(); track event.sequenceNumber) {
+        <li>
+          <match-event [event]="event" />
+        </li>
+      } @empty {
+        <li class="text-sm text-stone-600">No events yet.</li>
+      }
+    </ul>
+  </div>
+}
+
+
+
+

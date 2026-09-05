@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { MatchPage } from './match-page/match-page';
+import { MatchPage } from './matches/match-page/match-page';
 import { App } from './app';
 import { Matches } from './matches/matches';
 

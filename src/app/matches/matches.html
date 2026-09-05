@@ -1,13 +1,20 @@
-<div class="flex flex-col gap-5 my-5">
-  @for (match of matches; track match.id) {
-    <match-row
-      [matchId]="match.id"
-      [homeClubName]="match.homeClubName"
-      [awayClubName]="match.awayClubName"
-      [date]="match.date"
-      [time]="match.time"
-      [status]="match.status"
-    />
-  }
-</div>
+@if (matches.isLoading()) {
+  <div>Loading matches...</div>
+}
+
+@if (matches.hasValue()) {
+  <div class="flex flex-col gap-5 my-5">
+    @for (match of matches.value(); track match.matchId) {
+      <match-row
+        [matchId]="match.matchId"
+        [homeClubName]="match.homeClubName"
+        [awayClubName]="match.awayClubName"
+        [date]="match.scheduledKickoff | date: 'mediumDate'"
+        [time]="match.scheduledKickoff | date: 'shortTime'"
+        [status]="match.status"
+      />
+    }
+  </div>
+}
+
 

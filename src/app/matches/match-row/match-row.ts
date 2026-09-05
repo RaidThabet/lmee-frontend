@@ -10,19 +10,19 @@ import { Router } from '@angular/router';
 export class MatchRow {
   router = inject(Router);
 
-  matchId = input.required<string>();
+  matchId = input.required<string | undefined>();
 
-  homeClubName = input.required<string>();
+  homeClubName = input.required<string | undefined>();
 
-  awayClubName = input.required<string>();
+  awayClubName = input.required<string | undefined>();
 
-  date = input.required<string>();
+  date = input.required<string | null | undefined>();
 
-  time = input.required<string>();
+  time = input.required<string | null | undefined>();
 
-  status = input.required<string>();
+  status = input.required<string | undefined>();
 
-  navigateToMatch(matchId: string) {
-    this.router.navigate(["/matches", matchId])
+  navigateToMatch(matchId: string | undefined) {
+    this.router.navigate(['/matches', matchId]);
   }
 }
