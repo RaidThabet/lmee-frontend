@@ -10,7 +10,7 @@ import { MatchService } from '../api';
   styleUrl: './matches.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Matches{
+export class Matches {
   matchService = inject(MatchService);
 
   matches = this.matchService.matchesResource();

@@ -2,13 +2,16 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessC
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideKeycloakAngular } from './keycloak-config';
+import { includeBearerTokenInterceptor } from 'keycloak-angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideKeycloakAngular(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideZonelessChangeDetection(),
-    provideHttpClient()
+    provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
   ]
 };

@@ -1,0 +1,70 @@
+<div class="flex flex-col gap-5 my-5 w-1/3 mx-auto">
+  <div class="flex flex-row justify-between items-center">
+    <h1 class="text-lg">Clubs</h1>
+    <button
+      (click)="navigateToMatches()"
+      class="border rounded-md border-stone-800 px-3 cursor-pointer"
+    >
+      Matches
+    </button>
+  </div>
+
+  @if (error()) {
+    <div role="alert" class="border rounded-md border-red-800 text-red-800 px-3 py-2">
+      {{ error() }}
+    </div>
+  }
+
+  <form
+    (submit)="save(); $event.preventDefault()"
+    class="flex flex-col gap-2 border rounded-md border-stone-800 p-3"
+  >
+    <label for="club-name">Name</label>
+    <input
+      id="club-name"
+      [formField]="clubForm.name"
+      class="border rounded-md border-stone-800 px-2"
+    />
+
+    <label for="club-country">Country</label>
+    <input
+      id="club-country"
+      [formField]="clubForm.country"
+      class="border rounded-md border-stone-800 px-2"
+    />
+
+    <div class="flex flex-row gap-2">
+      <button
+        type="submit"
+        [disabled]="clubForm().invalid()"
+        class="border rounded-md border-stone-800 px-3 cursor-pointer disabled:opacity-50"
+      >
+        {{ editingId() ? 'Update' : 'Create' }}
+      </button>
+      @if (editingId()) {
+        <button
+          type="button"
+          (click)="cancel()"
+          class="border rounded-md border-stone-800 px-3 cursor-pointer"
+        >
+          Cancel
+        </button>
+      }
+    </div>
+  </form>
+
+  @if (clubs.isLoading()) {
+    <div>Loading clubs...</div>
+  }
+
+  @for (club of clubs.value(); track club.id) {
+    <div class="grid grid-cols-3 items-center border rounded-md border-stone-800 px-5">
+      <span class="text-left">{{ club.name }}</span>
+      <span class="text-center">{{ club.country }}</span>
+      <div class="flex flex-row gap-3 justify-end">
+        <button (click)="edit(club)" class="cursor-pointer">Edit</button>
+        <button (click)="remove(club.id)" class="cursor-pointer">Delete</button>
+      </div>
+    </div>
+  }
+</div>
