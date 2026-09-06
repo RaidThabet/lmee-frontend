@@ -22,7 +22,7 @@
       />
     </div>
     <ul class="flex flex-col mx-auto w-2/4 gap-4 px-24 list-none">
-      @for (event of matchEvents.value(); track event.sequenceNumber) {
+      @for (event of events(); track event.sequenceNumber) {
         <li>
           <match-event [event]="event" />
         </li>
@@ -31,8 +31,9 @@
       }
     </ul>
   </div>
+} @else if (matchState.isLoading()) {
+<!-- // TODO: improve the interface-->
+  <div>Loading match page...</div>
+} @else if (matchState.error()) {
+  <div>Unable to load match page</div>
 }
-
-
-
-
