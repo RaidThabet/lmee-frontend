@@ -1,11 +1,14 @@
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Tag } from '@openng/optimus-ui/tag';
+import { statusLabel, statusSeverity } from '../match-status';
 
 @Component({
   selector: 'match-row',
-  imports: [],
+  imports: [Tag],
   templateUrl: './match-row.html',
   styleUrl: './match-row.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatchRow {
   router = inject(Router);
@@ -21,6 +24,10 @@ export class MatchRow {
   time = input.required<string | null | undefined>();
 
   status = input.required<string | undefined>();
+
+  statusLabel = computed(() => statusLabel(this.status()));
+
+  statusSeverity = computed(() => statusSeverity(this.status()));
 
   navigateToMatch(matchId: string | undefined) {
     this.router.navigate(['/matches', matchId]);

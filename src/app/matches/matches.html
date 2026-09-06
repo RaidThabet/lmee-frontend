@@ -1,20 +1,29 @@
-@if (matches.isLoading()) {
-  <div>Loading matches...</div>
-}
+<div class="mx-auto flex w-full max-w-2xl flex-col gap-4 px-4 py-6">
+  <h1 class="text-2xl font-semibold">Matches</h1>
 
-@if (matches.hasValue()) {
-  <div class="flex flex-col gap-5 my-5">
-    @for (match of matches.value(); track match.matchId) {
-      <match-row
-        [matchId]="match.matchId"
-        [homeClubName]="match.homeClubName"
-        [awayClubName]="match.awayClubName"
-        [date]="match.scheduledKickoff | date: 'mediumDate'"
-        [time]="match.scheduledKickoff | date: 'shortTime'"
-        [status]="match.status"
-      />
-    }
-  </div>
-}
+  @if (matches.isLoading()) {
+    <div role="status" aria-busy="true">
+      <span class="sr-only">Loading matches…</span>
+      @for (placeholder of [1, 2, 3]; track placeholder) {
+        <p-skeleton height="6rem" styleClass="mb-4" />
+      }
+    </div>
+  }
 
-
+  @if (matches.hasValue()) {
+    <div class="flex flex-col gap-4">
+      @for (match of matches.value(); track match.matchId) {
+        <match-row
+          [matchId]="match.matchId"
+          [homeClubName]="match.homeClubName"
+          [awayClubName]="match.awayClubName"
+          [date]="match.scheduledKickoff | date: 'mediumDate'"
+          [time]="match.scheduledKickoff | date: 'shortTime'"
+          [status]="match.status"
+        />
+      } @empty {
+        <p-message severity="info" text="No matches scheduled." />
+      }
+    </div>
+  }
+</div>

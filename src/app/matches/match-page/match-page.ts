@@ -1,18 +1,25 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Button } from '@openng/optimus-ui/button';
+import { Card } from '@openng/optimus-ui/card';
+import { Message } from '@openng/optimus-ui/message';
+import { Skeleton } from '@openng/optimus-ui/skeleton';
 import { MatchEvent } from './match-event/match-event';
 import { MatchSide } from './match-side/match-side';
 import { MatchState } from './match-state/match-state';
 import { MatchService } from '../../api';
 import { ActivatedRoute } from '@angular/router';
 import { MatchSocketService } from '../../api/match-socket.service';
+import { Auth } from '../../auth/auth';
 
 @Component({
   selector: 'app-match-page',
-  imports: [MatchSide, MatchState, MatchEvent],
+  imports: [MatchSide, MatchState, MatchEvent, Button, Card, Message, Skeleton],
   templateUrl: './match-page.html',
   styleUrl: './match-page.css',
 })
 export class MatchPage {
+  auth = inject(Auth);
+
   matchId = signal('');
   private activatedRoute = inject(ActivatedRoute);
 
@@ -33,7 +40,7 @@ export class MatchPage {
     const live = this.liveEvents();
     const kept = live.filter((e) => (e.sequenceNumber ?? 0) > last);
     return [...snapshot, ...kept];
-  })
+  });
 
   constructor() {
     this.activatedRoute.params.subscribe((params) => {

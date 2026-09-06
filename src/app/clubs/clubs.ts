@@ -2,11 +2,16 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { form, FormField, required, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { Button } from '@openng/optimus-ui/button';
+import { Card } from '@openng/optimus-ui/card';
+import { InputText } from '@openng/optimus-ui/inputtext';
+import { Message } from '@openng/optimus-ui/message';
+import { TableModule } from '@openng/optimus-ui/table';
 import { apiErrorMessage, ClubService, type ClubDTO } from '../api';
 
 @Component({
   selector: 'clubs',
-  imports: [FormField],
+  imports: [FormField, Button, Card, InputText, Message, TableModule],
   templateUrl: './clubs.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

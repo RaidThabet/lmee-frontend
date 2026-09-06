@@ -1,6 +1,4 @@
-<div class="flex flex-col">
-  <span>{{ status() }}</span>
-  <span>
-      {{ homeScore() }} - {{ awayScore() }}
-    </span>
+<div class="flex flex-col items-center gap-2">
+  <p-tag [value]="statusLabel()" [severity]="statusSeverity()" />
+  <span class="text-3xl font-bold tabular-nums">{{ homeScore() }} - {{ awayScore() }}</span>
 </div>

@@ -1,13 +1,18 @@
-<button (click)="navigateToMatch(matchId())" class="flex flex-col border rounded-b-md border-stone-800 w-1/3 mx-auto cursor-pointer">
-  <span class="flex flex-row justify-center">
-    {{ date() }}
+<button
+  type="button"
+  (click)="navigateToMatch(matchId())"
+  class="border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 hover:border-primary focus-visible:outline-primary mx-auto flex w-full max-w-2xl cursor-pointer flex-col gap-2 rounded-lg border p-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+>
+  <span class="text-muted-color flex flex-row items-center justify-center gap-2 text-xs">
+    <i class="pi pi-calendar" aria-hidden="true"></i>{{ date() }}
   </span>
-  <div class="grid grid-cols-3 items-center px-5">
-    <span class="text-left">{{ homeClubName() }}</span>
-    <div class="flex flex-col items-center">
-      <span>{{ time() }}</span>
-      <span>{{ status() }}</span>
+
+  <div class="grid grid-cols-3 items-center gap-3">
+    <span class="truncate text-left font-medium">{{ homeClubName() }}</span>
+    <div class="flex flex-col items-center gap-1">
+      <span class="text-sm font-semibold">{{ time() }}</span>
+      <p-tag [value]="statusLabel()" [severity]="statusSeverity()" />
     </div>
-    <span class="text-right">{{ awayClubName() }}</span>
+    <span class="truncate text-right font-medium">{{ awayClubName() }}</span>
   </div>
 </button>
