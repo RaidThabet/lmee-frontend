@@ -288,12 +288,12 @@ export interface components {
         };
         CreateMatchRequest: {
             /** Format: date-time */
-            scheduledKickoff?: string;
-            venue?: string;
+            scheduledKickoff: string;
+            venue: string;
             /** Format: uuid */
-            homeTeamId?: string;
+            homeTeamId: string;
             /** Format: uuid */
-            awayTeamId?: string;
+            awayTeamId: string;
         };
         CreateMatchResponse: {
             /** Format: uuid */

@@ -1,5 +1,11 @@
 <div class="mx-auto flex w-full max-w-2xl flex-col gap-4 px-4 py-6">
-  <h1 class="text-2xl font-semibold">Matches</h1>
+  <div class="flex flex-col gap-5">
+    @if (auth.isAdmin()) {
+      <p-button (click)="openScheduleDialog()" label="Schedule a match" />
+      <schedule-drawer [(isVisible)]="drawerVisible" (saved)="matches.reload()" />
+    }
+    <h1 class="text-2xl font-semibold">Matches</h1>
+  </div>
 
   @if (matches.isLoading()) {
     <div role="status" aria-busy="true">

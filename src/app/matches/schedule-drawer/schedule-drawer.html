@@ -1,0 +1,42 @@
+<p-dialog header="Schedule Match" [modal]="true" [(visible)]="isVisible" [style]="{ width: '25rem' }">
+  <form (submit)="save(); $event.preventDefault();" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
+      <label for="home-club" class="text-sm font-medium">Home Club</label>
+      <select id="home-club" pInputText [formField]="matchForm.homeTeamId" class="w-full">
+        <option value="">Select home club</option>
+        @for (club of clubs.value(); track club.id) {
+          <option [value]="club.id">{{ club.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="away-club" class="text-sm font-medium">Away Club</label>
+      <select id="away-club" pInputText [formField]="matchForm.awayTeamId" class="w-full">
+        <option value="">Select away club</option>
+        @for (club of clubs.value(); track club.id) {
+          <option [value]="club.id">{{ club.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="venue-name" class="text-sm font-medium">Venue</label>
+      <input id="venue-name" pInputText [formField]="matchForm.venue" class="w-full" />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="scheduled-kickoff" class="text-sm font-medium">Kickoff</label>
+      <p-datepicker
+        inputId="scheduled-kickoff"
+        [ngModel]="matchForm.scheduledKickoff().value()"
+        (ngModelChange)="matchForm.scheduledKickoff().value.set($event)"
+        [ngModelOptions]="{ standalone: true }"
+        [showTime]="true"
+        hourFormat="24"></p-datepicker>
+    </div>
+
+    <p-button type="submit" [disabled]="matchForm().invalid()" label="Save"/>
+
+  </form>
+</p-dialog>
