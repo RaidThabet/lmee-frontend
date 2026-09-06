@@ -3,6 +3,7 @@ import { Button } from '@openng/optimus-ui/button';
 import { Card } from '@openng/optimus-ui/card';
 import { Message } from '@openng/optimus-ui/message';
 import { Skeleton } from '@openng/optimus-ui/skeleton';
+import { EventDrawer } from './event-drawer/event-drawer';
 import { MatchEvent } from './match-event/match-event';
 import { MatchSide } from './match-side/match-side';
 import { MatchState } from './match-state/match-state';
@@ -13,7 +14,7 @@ import { Auth } from '../../auth/auth';
 
 @Component({
   selector: 'app-match-page',
-  imports: [MatchSide, MatchState, MatchEvent, Button, Card, Message, Skeleton],
+  imports: [MatchSide, MatchState, MatchEvent, EventDrawer, Button, Card, Message, Skeleton],
   templateUrl: './match-page.html',
   styleUrl: './match-page.css',
 })
@@ -21,6 +22,8 @@ export class MatchPage {
   auth = inject(Auth);
 
   matchId = signal('');
+
+  eventDrawerVisible = signal(false);
   private activatedRoute = inject(ActivatedRoute);
 
   matchService = inject(MatchService);
@@ -52,5 +55,16 @@ export class MatchPage {
         this.matchEvents.reload();
       }
     });
+  }
+
+  reloadMatch() {
+    this.matchState.reload();
+    this.matchEvents.reload();
+  }
+
+  startMatch() {
+    this.matchService
+      .recordEvent(this.matchId(), {type: "MATCH_STARTED"})
+      .subscribe();
   }
 }

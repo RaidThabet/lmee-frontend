@@ -1,0 +1,179 @@
+<p-dialog
+  header="Add Event"
+  [modal]="true"
+  [(visible)]="isVisible"
+  [style]="{ width: '32rem' }"
+  (onHide)="clear()"
+>
+  @if (!selected()) {
+    <div class="flex flex-col gap-4">
+      @for (section of groups(); track section.group) {
+        <div class="flex flex-col gap-2">
+          <h3 class="text-muted-color text-xs font-semibold tracking-wide uppercase">
+            {{ section.group }}
+          </h3>
+          <div class="grid grid-cols-3 gap-2">
+            @for (option of section.options; track option.type) {
+              <button
+                type="button"
+                (click)="select(option)"
+                class="border-surface hover:border-primary hover:bg-primary-50 focus-visible:outline-primary flex flex-col items-center gap-1 rounded-lg border p-3 text-center text-sm focus-visible:outline-2 focus-visible:outline-offset-2 dark:hover:bg-surface-800"
+              >
+                <i class="pi {{ option.icon }} {{ option.tone ?? 'text-muted-color' }}" aria-hidden="true"></i>
+                <span>{{ option.label }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <form (submit)="save(); $event.preventDefault()" class="flex flex-col gap-4">
+      <div class="bg-surface-100 dark:bg-surface-800 flex items-center justify-between gap-3 rounded-lg px-3 py-2">
+        <span class="flex items-center gap-2 font-medium">
+          <i class="pi {{ selected()!.icon }} {{ selected()!.tone ?? 'text-muted-color' }}" aria-hidden="true"></i>
+          {{ selected()!.label }}
+        </span>
+        <p-button type="button" (click)="clear()" label="Change" size="small" [text]="true" />
+      </div>
+
+      @if (needs('club')) {
+        <div class="flex flex-col gap-2">
+          <span id="event-club-label" class="text-sm font-medium">Club</span>
+          <p-selectButton
+            [options]="sideOptions()"
+            optionLabel="label"
+            optionValue="value"
+            [allowEmpty]="false"
+            [ngModel]="side()"
+            (ngModelChange)="setSide($event)"
+            [ngModelOptions]="{ standalone: true }"
+            ariaLabelledBy="event-club-label"
+          />
+        </div>
+      }
+
+      @if (needs('player')) {
+        <div class="flex flex-col gap-2">
+          <label for="event-player" class="text-sm font-medium">Player</label>
+          <p-select
+            inputId="event-player"
+            [options]="squad()"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            filterBy="name"
+            placeholder="Select player"
+            emptyMessage="No players for this club"
+            [ngModel]="playerId()"
+            (ngModelChange)="playerId.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+            styleClass="w-full"
+          />
+        </div>
+      }
+
+      @if (needs('sub')) {
+        <div class="flex flex-col gap-2">
+          <label for="event-player-out" class="text-sm font-medium">Player out</label>
+          <p-select
+            inputId="event-player-out"
+            [options]="squad()"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            filterBy="name"
+            placeholder="Select player"
+            emptyMessage="No players for this club"
+            [ngModel]="playerOutId()"
+            (ngModelChange)="playerOutId.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+            styleClass="w-full"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="event-player-in" class="text-sm font-medium">Player in</label>
+          <p-select
+            inputId="event-player-in"
+            [options]="squad()"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            filterBy="name"
+            placeholder="Select player"
+            emptyMessage="No players for this club"
+            [ngModel]="playerInId()"
+            (ngModelChange)="playerInId.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+            styleClass="w-full"
+          />
+        </div>
+      }
+
+      @if (needs('minute')) {
+        <div class="flex flex-col gap-2">
+          <label for="event-minute" class="text-sm font-medium">Minute</label>
+          <p-inputNumber
+            inputId="event-minute"
+            [min]="0"
+            [max]="130"
+            [showButtons]="true"
+            suffix="'"
+            [ngModel]="minute()"
+            (ngModelChange)="minute.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+      }
+
+      @if (needs('addedMinutes')) {
+        <div class="flex flex-col gap-2">
+          <label for="event-added-minutes" class="text-sm font-medium">Added minutes</label>
+          <p-inputNumber
+            inputId="event-added-minutes"
+            [min]="0"
+            [max]="30"
+            [showButtons]="true"
+            [ngModel]="addedMinutes()"
+            (ngModelChange)="addedMinutes.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+      }
+
+      @if (needs('reason')) {
+        <div class="flex flex-col gap-2">
+          <label for="event-reason" class="text-sm font-medium">Reason</label>
+          <input
+            id="event-reason"
+            pInputText
+            [ngModel]="reason()"
+            (ngModelChange)="reason.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+            class="w-full"
+          />
+        </div>
+      }
+
+      @if (needs('decision')) {
+        <div class="flex flex-col gap-2">
+          <label for="event-decision" class="text-sm font-medium">Decision</label>
+          <input
+            id="event-decision"
+            pInputText
+            [ngModel]="decision()"
+            (ngModelChange)="decision.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+            class="w-full"
+          />
+        </div>
+      }
+
+      @if (error()) {
+        <p-message severity="error" [text]="error()!" />
+      }
+
+      <p-button type="submit" label="Publish event" [disabled]="!valid() || saving()" [loading]="saving()" />
+    </form>
+  }
+</p-dialog>

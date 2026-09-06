@@ -13,6 +13,7 @@
           [homeScore]="matchState.value().homeScore"
           [awayScore]="matchState.value().awayScore"
           [status]="matchState.value().status"
+          (start)="startMatch()"
         />
         <match-side
           [clubName]="matchState.value().awayClubName"
@@ -25,7 +26,19 @@
     </p-card>
 
     @if (auth.isOperator()) {
-      <p-button label="Add Event" icon="pi pi-plus" styleClass="mx-auto" />
+      <p-button
+        label="Add Event"
+        icon="pi pi-plus"
+        styleClass="mx-auto"
+        (click)="eventDrawerVisible.set(true)"
+      />
+      <event-drawer
+        [(isVisible)]="eventDrawerVisible"
+        [matchId]="matchId()"
+        [homeClubName]="matchState.value().homeClubName"
+        [awayClubName]="matchState.value().awayClubName"
+        (recorded)="reloadMatch()"
+      />
     }
 
     <p-card>
