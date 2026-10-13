@@ -1,23 +1,39 @@
 <p-toolbar styleClass="sticky top-0 z-10 rounded-none border-x-0 border-t-0">
   <ng-template #start>
-    @if (auth.isAdmin()) {
       <nav class="flex items-center gap-2" aria-label="Admin">
-        <p-button
-          label="Clubs"
-          icon="pi pi-building"
-          severity="secondary"
-          [text]="true"
-          (onClick)="navigateTo('/clubs')"
-        />
-        <p-button
-          label="Players"
-          icon="pi pi-users"
-          severity="secondary"
-          [text]="true"
-          (onClick)="navigateTo('/players')"
-        />
+          <p-button
+            label="Home"
+            icon="pi pi-home"
+            severity="secondary"
+            [text]="true"
+            (onClick)="navigateTo('/')"
+          />
+        @if (auth.isAdmin()) {
+          <p-button
+            label="Clubs"
+            icon="pi pi-building"
+            severity="secondary"
+            [text]="true"
+            (onClick)="navigateTo('/clubs')"
+          />
+          <p-button
+            label="Players"
+            icon="pi pi-users"
+            severity="secondary"
+            [text]="true"
+            (onClick)="navigateTo('/players')"
+          />
+      }
+        @if (auth.isAuthenticated()) {
+          <p-button
+            label="Favourite Clubs"
+            icon="pi pi-heart"
+            severity="secondary"
+            [text]="true"
+            (onClick)="navigateTo('/favourite-clubs')"
+          />
+        }
       </nav>
-    }
   </ng-template>
 
   <ng-template #end>

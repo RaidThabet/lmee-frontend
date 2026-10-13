@@ -68,6 +68,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/user-clubs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getUserFavouriteClubs"];
+        put?: never;
+        post: operations["addFavouriteClub"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/players": {
         parameters: {
             query?: never;
@@ -143,6 +159,22 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/user-clubs/{clubId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["removeClubFromFavourites"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1375,6 +1407,140 @@ export interface operations {
             };
         };
     };
+    getUserFavouriteClubs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Request succeeded. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ClubDTO"][];
+                };
+            };
+            /** @description Unexpected failure, or stored match data that is inconsistent (MATCH_STREAM_CORRUPTED, MATCH_PROJECTION_OUT_OF_SYNC). The incident is logged with the timestamp returned in the body. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": 500,
+                     *       "code": "MATCH_STREAM_CORRUPTED",
+                     *       "message": "Stored match data is inconsistent. The incident has been logged.",
+                     *       "timestamp": "2026-09-03T14:35:12.482+02:00"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    addFavouriteClub: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["IdResponseDTO"];
+            };
+        };
+        responses: {
+            /** @description Resource created. The body carries its identifier. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ClubDTO"];
+                };
+            };
+            /** @description The payload fails validation (code VALIDATION_FAILED), carries a value that cannot be converted to its declared type (ARGUMENT_TYPE_MISMATCH), or references data that does not belong together (CLUB_NOT_IN_MATCH, PLAYER_NOT_IN_CLUB). */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiValidationError"] | components["schemas"]["ApiTypeMismatchError"];
+                };
+            };
+            /** @description No access token was sent, or the token is expired or invalid. Written by the security entry point, which emits only a code and a message. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "code": "INSUFFICIENT_AUTHENTICATION",
+                     *       "message": "Full authentication is required to access this resource"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description The token is valid but the caller lacks the required role. Written by the security access denied handler, which emits only a code and a message. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "code": "ACCESS_DENIED",
+                     *       "message": "Access is denied"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description No resource exists for the given identifier. The code names the resource: CLUB_NOT_FOUND, PLAYER_NOT_FOUND or MATCH_NOT_FOUND. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": 404,
+                     *       "code": "MATCH_NOT_FOUND",
+                     *       "message": "Match 3f2b1c9e-0a4d-4a7e-8b12-8d5f6c7e9a01 does not exist",
+                     *       "timestamp": "2026-09-03T14:35:12.482+02:00"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unexpected failure, or stored match data that is inconsistent (MATCH_STREAM_CORRUPTED, MATCH_PROJECTION_OUT_OF_SYNC). The incident is logged with the timestamp returned in the body. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": 500,
+                     *       "code": "MATCH_STREAM_CORRUPTED",
+                     *       "message": "Stored match data is inconsistent. The incident has been logged.",
+                     *       "timestamp": "2026-09-03T14:35:12.482+02:00"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
     getAllPlayers: {
         parameters: {
             query?: never;
@@ -1811,6 +1977,110 @@ export interface operations {
                 };
                 content: {
                     "*/*": string;
+                };
+            };
+        };
+    };
+    removeClubFromFavourites: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                clubId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Resource deleted. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description An identifier in the path is not a valid UUID. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": 400,
+                     *       "code": "ARGUMENT_TYPE_MISMATCH",
+                     *       "message": "Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'",
+                     *       "timestamp": "2026-09-03T14:35:12.482+02:00",
+                     *       "expectedType": "java.util.UUID",
+                     *       "property": "matchId",
+                     *       "rejectedValue": "not-a-uuid"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiTypeMismatchError"];
+                };
+            };
+            /** @description No access token was sent, or the token is expired or invalid. Written by the security entry point, which emits only a code and a message. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "code": "INSUFFICIENT_AUTHENTICATION",
+                     *       "message": "Full authentication is required to access this resource"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description The token is valid but the caller lacks the required role. Written by the security access denied handler, which emits only a code and a message. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "code": "ACCESS_DENIED",
+                     *       "message": "Access is denied"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description No resource exists for the given identifier. The code names the resource: CLUB_NOT_FOUND, PLAYER_NOT_FOUND or MATCH_NOT_FOUND. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": 404,
+                     *       "code": "MATCH_NOT_FOUND",
+                     *       "message": "Match 3f2b1c9e-0a4d-4a7e-8b12-8d5f6c7e9a01 does not exist",
+                     *       "timestamp": "2026-09-03T14:35:12.482+02:00"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unexpected failure, or stored match data that is inconsistent (MATCH_STREAM_CORRUPTED, MATCH_PROJECTION_OUT_OF_SYNC). The incident is logged with the timestamp returned in the body. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": 500,
+                     *       "code": "MATCH_STREAM_CORRUPTED",
+                     *       "message": "Stored match data is inconsistent. The incident has been logged.",
+                     *       "timestamp": "2026-09-03T14:35:12.482+02:00"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
         };
