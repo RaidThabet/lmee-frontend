@@ -46,7 +46,11 @@
           />
         }
       </div>
+      <p-fileupload mode="basic" name="file" chooseIcon="pi pi-upload" [url]="clubService.crestUploadUrl"
+                    accept="image/*" maxFileSize="2000000" (onUpload)="onCrestUpload($event)" [auto]="true"
+                    chooseLabel="Choose club crest" />
     </form>
+
   </p-card>
 
   <p-table
@@ -65,7 +69,18 @@
 
     <ng-template #body let-club>
       <tr>
-        <td>{{ club.name }}</td>
+        <td>
+          <div class="flex items-center gap-3">
+            <img
+              [ngSrc]="club.crestUrl ?? defaultCrest"
+              alt="club_crest"
+              width="40"
+              height="40"
+              class="bg-white rounded p-1 object-contain"
+            >
+            <span>{{ club.name }}</span>
+          </div>
+        </td>
         <td>{{ club.country }}</td>
         <td class="text-right">
           <p-button

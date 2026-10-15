@@ -4,7 +4,7 @@
       <div class="flex flex-row items-center justify-between gap-5">
         <match-side
           [clubName]="matchState.value().homeClubName"
-          isHome="true"
+          [clubCrestUrl]="matchState.value().homeClubCrestUrl"
           [yellows]="matchState.value().homeYellows"
           [reds]="matchState.value().homeReds"
           [subs]="matchState.value().homeSubs"
@@ -17,7 +17,7 @@
         />
         <match-side
           [clubName]="matchState.value().awayClubName"
-          isHome="false"
+          [clubCrestUrl]="matchState.value().awayClubCrestUrl"
           [yellows]="matchState.value().awayYellows"
           [reds]="matchState.value().awayReds"
           [subs]="matchState.value().awaySubs"

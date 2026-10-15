@@ -116,6 +116,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/clubs/crests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["uploadCrest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/matches/{matchId}": {
         parameters: {
             query?: never;
@@ -317,6 +333,7 @@ export interface components {
             id?: string;
             name: string;
             country: string;
+            crestUrl?: string;
         };
         CreateMatchRequest: {
             /** Format: date-time */
@@ -474,7 +491,9 @@ export interface components {
             /** @enum {string} */
             status?: "SCHEDULED" | "IN_PROGRESS" | "HALF_TIME" | "COMPLETED" | "POSTPONED" | "ABANDONED";
             homeClubName?: string;
+            homeClubCrestUrl?: string;
             awayClubName?: string;
+            awayClubCrestUrl?: string;
         };
         MatchStateDTO: {
             /** Format: uuid */
@@ -482,7 +501,9 @@ export interface components {
             /** @enum {string} */
             status?: "SCHEDULED" | "IN_PROGRESS" | "HALF_TIME" | "COMPLETED" | "POSTPONED" | "ABANDONED";
             homeClubName?: string;
+            homeClubCrestUrl?: string;
             awayClubName?: string;
+            awayClubCrestUrl?: string;
             /** Format: int32 */
             homeScore?: number;
             /** Format: int32 */
@@ -1805,6 +1826,35 @@ export interface operations {
                      *     }
                      */
                     "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    uploadCrest: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** Format: binary */
+                    file: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
                 };
             };
         };

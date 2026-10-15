@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { form, FormField, required, submit } from '@angular/forms/signals';
+import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Button } from '@openng/optimus-ui/button';
@@ -7,16 +8,20 @@ import { Card } from '@openng/optimus-ui/card';
 import { InputText } from '@openng/optimus-ui/inputtext';
 import { Message } from '@openng/optimus-ui/message';
 import { TableModule } from '@openng/optimus-ui/table';
-import { apiErrorMessage, ClubService, type ClubDTO } from '../api';
+import { apiErrorMessage, ClubService, DEFAULT_CLUB_CREST_URL, type ClubDTO } from '../api';
+import { NgOptimizedImage } from '@angular/common';
+import { FileUpload, FileUploadEvent } from '@openng/optimus-ui/fileupload';
 
 @Component({
   selector: 'clubs',
-  imports: [FormField, Button, Card, InputText, Message, TableModule],
+  imports: [FormField, Button, Card, InputText, Message, TableModule, NgOptimizedImage, FileUpload],
   templateUrl: './clubs.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Clubs {
   router = inject(Router);
+
+  protected readonly defaultCrest = DEFAULT_CLUB_CREST_URL;
 
   clubService = inject(ClubService);
 
@@ -26,7 +31,7 @@ export class Clubs {
 
   error = signal<string | undefined>(undefined);
 
-  model = signal({ name: '', country: '' });
+  model = signal({ name: '', country: '', crestUrl: '' });
 
   clubForm = form(this.model, (club) => {
     required(club.name);
@@ -39,12 +44,12 @@ export class Clubs {
 
   edit(club: ClubDTO) {
     this.editingId.set(club.id);
-    this.model.set({ name: club.name, country: club.country });
+    this.model.set({ name: club.name, country: club.country, crestUrl: club.crestUrl ?? '' });
   }
 
   cancel() {
     this.editingId.set(undefined);
-    this.model.set({ name: '', country: '' });
+    this.model.set({ name: '', country: '', crestUrl: '' });
     this.clubForm().reset();
   }
 
@@ -78,5 +83,15 @@ export class Clubs {
       next: () => this.clubs.reload(),
       error: (error) => this.error.set(apiErrorMessage(error)),
     });
+  }
+
+  protected onCrestUpload($event: FileUploadEvent) {
+    const response = $event.originalEvent;
+    if (response instanceof HttpResponse) {
+      const body = response.body as { crestUrl?: string } | null;
+      if (body?.crestUrl) {
+        this.model.update((model) => ({ ...model, crestUrl: body.crestUrl! }));
+      }
+    }
   }
 }

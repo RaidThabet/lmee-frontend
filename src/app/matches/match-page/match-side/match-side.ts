@@ -1,19 +1,23 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Skeleton } from '@openng/optimus-ui/skeleton';
 import { Tag } from '@openng/optimus-ui/tag';
+import { NgOptimizedImage } from '@angular/common';
+import { DEFAULT_CLUB_CREST_URL } from '../../../api';
 
 @Component({
   selector: 'match-side',
-  imports: [Skeleton, Tag],
+  imports: [Skeleton, Tag, NgOptimizedImage],
   templateUrl: './match-side.html',
   styleUrl: './match-side.css',
   host: { class: 'block min-w-0 flex-1' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatchSide {
+  protected readonly defaultCrest = DEFAULT_CLUB_CREST_URL;
+
   clubName = input.required<string | undefined>();
 
-  isHome = input.required<string | undefined>();
+  clubCrestUrl = input.required<string | undefined>();
 
   reds = input.required<number | undefined>();
 
@@ -28,6 +32,4 @@ export class MatchSide {
       this.yellows() !== undefined &&
       this.subs() !== undefined,
   );
-
-  alignClass = computed(() => (this.isHome() === 'true' ? 'items-start' : 'items-end'));
 }

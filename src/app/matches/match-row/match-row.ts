@@ -2,10 +2,12 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { Router } from '@angular/router';
 import { Tag } from '@openng/optimus-ui/tag';
 import { statusLabel, statusSeverity } from '../match-status';
+import { NgOptimizedImage } from '@angular/common';
+import { DEFAULT_CLUB_CREST_URL } from '../../api';
 
 @Component({
   selector: 'match-row',
-  imports: [Tag],
+  imports: [Tag, NgOptimizedImage],
   templateUrl: './match-row.html',
   styleUrl: './match-row.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,11 +15,17 @@ import { statusLabel, statusSeverity } from '../match-status';
 export class MatchRow {
   router = inject(Router);
 
+  protected readonly defaultCrest = DEFAULT_CLUB_CREST_URL;
+
   matchId = input.required<string | undefined>();
 
   homeClubName = input.required<string | undefined>();
 
+  homeClubCrestUrl = input.required<string | undefined>();
+
   awayClubName = input.required<string | undefined>();
+
+  awayClubCrestUrl = input.required<string | undefined>();
 
   date = input.required<string | null | undefined>();
 

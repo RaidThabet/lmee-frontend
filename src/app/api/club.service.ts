@@ -17,6 +17,10 @@ export class ClubService {
       return clubId ? `${this.#base}/api/clubs/${clubId}` : undefined;
     });
 
+  get crestUploadUrl(): string {
+    return `${this.#base}/api/clubs/crests`;
+  }
+
   createClub(body: ClubDTO) {
     return this.#http.post<IdResponseDTO>(`${this.#base}/api/clubs`, body);
   }

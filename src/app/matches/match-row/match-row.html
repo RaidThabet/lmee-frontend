@@ -8,11 +8,21 @@
   </span>
 
   <div class="grid grid-cols-3 items-center gap-3">
-    <span class="truncate text-left font-medium">{{ homeClubName() }}</span>
+    <span class="flex min-w-0 items-center gap-3">
+      <img [ngSrc]="homeClubCrestUrl() ?? defaultCrest"
+           [alt]="homeClubName() + ' crest'"
+           width="40" height="40" class="shrink-0 rounded bg-white object-contain">
+      <span class="truncate text-left font-medium">{{ homeClubName() }}</span>
+    </span>
     <div class="flex flex-col items-center gap-1">
       <span class="text-sm font-semibold">{{ time() }}</span>
       <p-tag [value]="statusLabel()" [severity]="statusSeverity()" />
     </div>
-    <span class="truncate text-right font-medium">{{ awayClubName() }}</span>
+    <span class="flex min-w-0 flex-row-reverse items-center gap-3">
+      <img [ngSrc]="awayClubCrestUrl() ?? defaultCrest"
+           [alt]="awayClubName() + ' crest'"
+           width="40" height="40" class="shrink-0 rounded bg-white object-contain">
+      <span class="truncate text-right font-medium">{{ awayClubName() }}</span>
+    </span>
   </div>
 </button>
